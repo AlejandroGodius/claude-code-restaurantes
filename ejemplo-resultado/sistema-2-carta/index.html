@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F3EADB">
+  <title>La carta · Bodega Godius</title>
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Figtree:wght@400;500;600;700&family=Young+Serif&display=swap">
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <header class="cabecera">
+    <div class="cabecera-in">
+      <div>
+        <span class="marca" id="marca">Bodega Godius</span>
+        <span class="marca-tipo" id="tipo"></span>
+      </div>
+      <div class="idiomas" role="group" id="idiomas">
+        <button type="button" data-lang="es" lang="es">ES</button><span aria-hidden="true">·</span><button type="button" data-lang="en" lang="en">EN</button><span aria-hidden="true">·</span><button type="button" data-lang="de" lang="de">DE</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Todo se pinta desde datos.js: aquí no hay ningún plato escrito a mano -->
+  <main class="col">
+    <section class="estrella" id="estrella"></section>
+    <p class="alergenos" id="alergenos"></p>
+    <div class="carta-cab"><p class="antetitulo" id="cartaAnte"></p><h2 id="cartaTitulo"></h2></div>
+    <div id="secciones"></div>
+    <section class="seccion bebidas" id="bebidas"></section>
+    <footer class="pie" id="pie"></footer>
+  </main>
+
+  <script src="datos.js"></script>
+  <script>
+    (function () {
+      var B = window.BODEGA;
+      var IDIOMAS = ["es", "en", "de"];
+      var CLAVE = "bodega-godius-idioma";
+
+      function esc(s) {
+        return String(s).replace(/[&<>"']/g, function (c) {
+          return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+        });
+      }
+
+      // ?lang= en la URL › el que eligió antes › idioma del móvil
+      function idiomaInicial() {
+        var param = (new URLSearchParams(location.search).get("lang") || "").toLowerCase();
+        if (IDIOMAS.indexOf(param) > -1) return param;
+        try {
+          var guardado = localStorage.getItem(CLAVE);
+          if (IDIOMAS.indexOf(guardado) > -1) return guardado;
+        } catch (e) {}
+        var nav = ((navigator.languages && navigator.languages[0]) || navigator.language || "es").toLowerCase().split("-")[0];
+        if (["es", "ca", "gl", "eu"].indexOf(nav) > -1) return "es";
+        if (nav === "de") return "de";
+        return "en";
+      }
+
+      // 21-nov (vídeo ep. 1): foto real del plato dentro del MISMO hueco (mismo tamaño: la carta no se mueve)
+      function foto(nombre, t, insignia, id) {
+        return '<figure class="foto' + (id ? ' con-img' : '') + '">' +
+          (id ? '<img class="foto-img" src="fotos/' + esc(id) + '.jpg" alt="' + esc(nombre) + '">' : '') +
+          (insignia ? '<span class="insignia">' + esc(insignia) + '</span>' : '') +
+          '<span class="foto-nombre">' + esc(nombre) + '</span>' +
+          '<span class="foto-nota">' + esc(t.foto_nota) + '</span>' +
+          '</figure>';
+      }
+
+      function lineaPrecio(nombre, precio, fmt) {
+        return '<div class="linea-precio"><h3>' + esc(nombre) + '</h3><span class="puntos" aria-hidden="true"></span>' +
+          '<span class="precio">' + esc(fmt.format(precio)) + '</span></div>';
+      }
+
+      function pintar(idioma) {
+        var t = B.textos[idioma];
+        var fmt = new Intl.NumberFormat(t.locale, { style: "currency", currency: B.moneda });
+        var estrella = B.platos.filter(function (p) { return p.id === B.plato_estrella; })[0];
+
+        document.documentElement.lang = idioma;
+        document.title = t.titulo_pagina;
+        document.getElementById("marca").textContent = B.nombre;
+        document.getElementById("tipo").textContent = t.tipo;
+        document.getElementById("idiomas").setAttribute("aria-label", t.idioma);
+        document.querySelectorAll("#idiomas button").forEach(function (b) {
+          b.setAttribute("aria-pressed", b.getAttribute("data-lang") === idioma ? "true" : "false");
+        });
+
+        // Plato estrella: foto grande + pizarra con sello
+        if (estrella) {
+          var e = estrella[idioma];
+          document.getElementById("estrella").innerHTML =
+            '<p class="antetitulo">' + esc(t.estrella_ante) + '</p>' +
+            '<div class="estrella-grid">' + foto(e.nombre, t, '', estrella.id) +
+              '<div class="pizarra estrella-pizarra">' +
+                '<span class="sello" aria-hidden="true">' + esc(t.sello[0]) + '<br>' + esc(t.sello[1]) + '</span>' +
+                '<p class="tiza-ante">' + esc(t.estrella_tiza) + '</p>' +
+                '<h1 class="tiza-nombre">' + esc(e.nombre) + '</h1>' +
+                '<p class="tiza-desc">' + esc(e.descripcion) + '</p>' +
+                '<span class="tiza-precio">' + esc(fmt.format(estrella.precio)) + '</span>' +
+              '</div>' +
+            '</div>';
+        }
+
+        var alergenos = '<strong>' + esc(t.alergenos_titulo) + '.</strong>' + esc(t.alergenos);
+        document.getElementById("alergenos").innerHTML = alergenos;
+        document.getElementById("cartaAnte").textContent = t.carta_ante;
+        document.getElementById("cartaTitulo").textContent = t.carta_titulo;
+
+        // Secciones con foto grande por plato
+        document.getElementById("secciones").innerHTML = B.secciones.map(function (s) {
+          var platos = B.platos.filter(function (p) { return p.seccion === s.id; });
+          if (!platos.length) return "";
+          return '<section class="seccion" id="' + esc(s.id) + '">' +
+            '<h2 class="seccion-titulo">' + esc(s[idioma]) + '</h2>' +
+            '<div class="lista">' + platos.map(function (p) {
+              var d = p[idioma];
+              return '<article class="plato" id="plato-' + esc(p.id) + '">' +
+                foto(d.nombre, t, p.id === B.plato_estrella ? t.insignia : "", p.id) +
+                lineaPrecio(d.nombre, p.precio, fmt) +
+                '<p class="desc">' + esc(d.descripcion) + '</p>' +
+                '</article>';
+            }).join("") + '</div></section>';
+        }).join("");
+
+        // Bebidas, sin foto
+        document.getElementById("bebidas").innerHTML =
+          '<h2 class="seccion-titulo">' + esc(t.bebidas) + '</h2>' +
+          '<div class="lista">' + B.bebidas.map(function (b) {
+            var d = b[idioma];
+            return '<article class="bebida">' + lineaPrecio(d.nombre, b.precio, fmt) +
+              '<p class="desc">' + esc(d.descripcion) + '</p></article>';
+          }).join("") + '</div>';
+
+        document.getElementById("pie").innerHTML =
+          '<p class="pie-lema">' + esc(t.lema) + '</p>' +
+          '<p>' + esc(t.horario) + '</p>' +
+          '<p><a href="mailto:' + esc(B.email) + '">' + esc(B.email) + '</a></p>' +
+          '<p class="alergenos">' + alergenos + '</p>';
+      }
+
+      document.getElementById("idiomas").addEventListener("click", function (ev) {
+        var boton = ev.target.closest("button[data-lang]");
+        if (!boton) return;
+        var idioma = boton.getAttribute("data-lang");
+        try { localStorage.setItem(CLAVE, idioma); } catch (e) {}
+        // Si la URL traía ?lang=, la actualizamos para que no pise la elección al recargar
+        if (new URLSearchParams(location.search).has("lang")) {
+          try { history.replaceState(null, "", "?lang=" + idioma); } catch (e) {}
+        }
+        pintar(idioma);
+      });
+
+      pintar(idiomaInicial());
+    })();
+  </script>
+</body>
+</html>

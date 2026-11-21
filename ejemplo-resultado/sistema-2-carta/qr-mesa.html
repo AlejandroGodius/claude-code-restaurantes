@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tarjeta de mesa · Bodega Godius</title>
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Figtree:wght@400;500;600;700&family=Young+Serif&display=swap">
+  <link rel="stylesheet" href="estilos.css">
+  <style>
+    /* A6 vertical. Chrome ignora «A6»: siempre en mm */
+    @page { size: 105mm 148mm; margin: 0; }
+
+    body { background-color: var(--papel-osc); }
+
+    .barra { max-width: 640px; margin: 0 auto; padding: 22px 16px 18px; }
+    .barra h1 { font-size: 1.7rem; }
+    .barra p { margin: .45rem 0 1rem; font-size: .98rem; color: var(--tinta-suave); }
+    .barra-acciones { display: flex; flex-wrap: wrap; gap: 10px; }
+    .btn {
+      flex: 1 1 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .6rem;
+      min-height: 52px;
+      padding: .85rem 1.25rem;
+      border: 2px solid transparent;
+      border-radius: 6px;
+      font: 700 1.0625rem/1.2 var(--f-texto);
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .btn svg { flex: none; width: 22px; height: 22px; }
+    .btn-vino { background-color: var(--vino); color: var(--papel); box-shadow: 0 3px 0 var(--tinta); }
+    .btn-vino:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--tinta); }
+    .btn-borde { background-color: var(--papel); color: var(--vino); border-color: var(--vino); }
+
+    .envoltorio { padding: 8px 16px 48px; }
+
+    /* La tarjeta escala con el ancho: todo en cqw, así la vista previa es la tarjeta en pequeño */
+    .hoja {
+      container-type: inline-size;
+      position: relative;
+      width: 100%;
+      max-width: 105mm;
+      aspect-ratio: 105 / 148;
+      margin: 0 auto;
+      overflow: hidden;
+      background-color: var(--papel);
+      background-image: var(--textura);
+      background-size: 6px 6px, 11px 11px;
+      box-shadow: 0 0 0 1px var(--linea), 8px 8px 0 rgba(42, 30, 22, .14);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .marco {
+      position: absolute;
+      inset: 4cqw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 5cqw 4cqw 4cqw;
+      border: max(3px, .9cqw) double var(--tinta);
+      text-align: center;
+    }
+    .c-marca { margin: 0; font: 400 9.5cqw/1 var(--f-titulo); }
+    .c-tipo {
+      margin: 1.2cqw 0 0;
+      font-size: 2.8cqw;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--tinta-suave);
+    }
+    .c-adorno { width: 22cqw; margin: 2.4cqw 0; border-top: max(3px, .8cqw) double var(--mostaza); }
+    .c-titulo { font-size: 9cqw; line-height: 1.05; }
+    .c-sub { margin: .8cqw 0 0; font-size: 3.4cqw; font-weight: 600; letter-spacing: .04em; color: var(--tinta-suave); }
+
+    .qr-caja {
+      width: 48cqw;
+      margin-top: 3cqw;
+      padding: max(16px, 5cqw);
+      background-color: var(--papel);
+      background-image: none;
+      border: 1px solid var(--linea);
+    }
+    #qr img, #qr canvas { display: block; width: 100% !important; height: auto !important; }
+    #qr .sin-qr { margin: 0; font-size: 3cqw; color: var(--vino); }
+
+    .c-nota { margin: 2cqw 0 0; font-size: 3.4cqw; font-weight: 600; line-height: 1.25; }
+    .c-nota2 { margin: .5cqw 0 0; font-size: 2.6cqw; line-height: 1.25; color: var(--tinta-suave); }
+
+    .c-pizarra {
+      width: 100%;
+      margin-top: auto;
+      padding: 2.4cqw 15cqw 2.4cqw 4cqw;
+      border-width: 1.8cqw;
+      text-align: left;
+    }
+    .c-pizarra .sello {
+      top: -3.5cqw;
+      right: -2.5cqw;
+      width: 15cqw;
+      height: 15cqw;
+      font-size: 2.5cqw;
+      border-width: max(3px, .7cqw);
+      box-shadow: 0 0 0 .8cqw var(--papel);
+    }
+    .c-pizarra .sello::before { inset: 1.4cqw; }
+    .c-tiza { margin: 0; font: 700 4.6cqw/1.1 var(--f-tiza); }
+    .c-plato { margin: .4cqw 0 0; font: 700 5.2cqw/1.1 var(--f-tiza); }
+
+    @media print {
+      html, body { background: var(--papel); min-height: 0; }
+      body { margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .envoltorio { padding: 0; }
+      .hoja {
+        width: 105mm;
+        max-width: none;
+        height: 148mm;
+        aspect-ratio: auto;
+        margin: 0;
+        box-shadow: none;
+        break-after: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="barra no-print">
+    <h1>Tarjeta de mesa</h1>
+    <p>A6 vertical (105 × 148 mm). El QR abre la carta, que sale sola en el idioma del móvil.</p>
+    <div class="barra-acciones">
+      <button class="btn btn-vino" id="imprimir" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2M6 14h12v7H6z"/></svg>
+        Imprimir tarjeta
+      </button>
+      <a class="btn btn-borde" href="index.html">Ver la carta</a>
+    </div>
+  </div>
+
+  <div class="envoltorio">
+    <article class="hoja" aria-label="Tarjeta A6 con el QR de la carta">
+      <div class="marco">
+        <p class="c-marca" id="cMarca">Bodega Godius</p>
+        <p class="c-tipo" id="cTipo"></p>
+        <span class="c-adorno" aria-hidden="true"></span>
+        <h2 class="c-titulo">La carta</h2>
+        <p class="c-sub">Menu · Speisekarte</p>
+        <div class="qr-caja"><div id="qr"></div></div>
+        <p class="c-nota">Apunta con la cámara del móvil</p>
+        <p class="c-nota2"><span lang="en">Scan with your phone</span> · <span lang="de">Mit dem Handy scannen</span></p>
+        <div class="pizarra c-pizarra">
+          <span class="sello" aria-hidden="true" id="cSello"></span>
+          <p class="c-tiza">Si solo pides una cosa:</p>
+          <p class="c-plato" id="cPlato"></p>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <script src="datos.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    (function () {
+      var B = window.BODEGA;
+      var t = B.textos.es;
+      var estrella = B.platos.filter(function (p) { return p.id === B.plato_estrella; })[0];
+
+      document.getElementById("cMarca").textContent = B.nombre;
+      document.getElementById("cTipo").textContent = t.tipo;
+      document.getElementById("cSello").innerHTML = t.sello[0] + "<br>" + t.sello[1];
+      document.getElementById("cPlato").textContent = estrella ? estrella.es.nombre : "";
+
+      var caja = document.getElementById("qr");
+      if (window.QRCode) {
+        new QRCode(caja, {
+          text: B.url_carta,
+          width: 512,
+          height: 512,
+          colorDark: "#2A1E16",
+          colorLight: "#F3EADB",
+          correctLevel: QRCode.CorrectLevel.M
+        });
+        caja.removeAttribute("title");
+        var img = caja.querySelector("img");
+        if (img) img.alt = "Código QR para abrir la carta de " + B.nombre;
+      } else {
+        caja.innerHTML = '<p class="sin-qr">No se ha podido dibujar el QR: abre esta página con conexión a internet.</p>';
+      }
+
+      document.getElementById("imprimir").addEventListener("click", function () { window.print(); });
+    })();
+  </script>
+</body>
+</html>

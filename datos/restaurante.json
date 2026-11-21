@@ -1,0 +1,141 @@
+{
+  "_aviso": "Restaurante INVENTADO para una demo en vídeo. No existe. Las URL con PON_AQUI_ son de ejemplo.",
+  "nombre": "Bodega Godius",
+  "tipo": "Taberna de tapas",
+  "lema": "Tapas de siempre, caña bien tirada y nadie con prisa.",
+  "tono": "Cercano, de tú, con humor suave de barra. Frases cortas. Nunca chistes a costa del cliente. En las quejas se pide perdón de verdad, sin excusas.",
+  "horario": "De martes a domingo, de 12:30 a 16:30 y de 20:00 a 00:00",
+  "email": "hola@bodegagodius.es",
+  "url_resena_google": "https://search.google.com/local/writereview?placeid=PON_AQUI_TU_PLACE_ID",
+  "url_carta": "https://PON_AQUI_TU_WEB/carta",
+  "nota_alergenos": "Si tienes alguna alergia o intolerancia, pregúntanos: te decimos qué lleva cada plato.",
+  "moneda": "EUR",
+  "plato_estrella": "croquetas-de-la-abuela",
+  "platos": [
+    {
+      "id": "croquetas-de-la-abuela",
+      "nombre": "Croquetas de la abuela",
+      "categoria": "Raciones",
+      "descripcion": "Cremosas por dentro, crujientes por fuera. Seis unidades. La receta no se negocia.",
+      "precio": 8.5,
+      "estrella": true
+    },
+    {
+      "id": "patatas-bravas",
+      "nombre": "Patatas bravas de la casa",
+      "categoria": "Para picar",
+      "descripcion": "Con nuestra brava, que pica lo justo para que pidas otra caña.",
+      "precio": 6.0
+    },
+    {
+      "id": "ensaladilla-rusa",
+      "nombre": "Ensaladilla rusa",
+      "categoria": "Para picar",
+      "descripcion": "Con atún, mayonesa casera y picos para mojar sin vergüenza.",
+      "precio": 6.5
+    },
+    {
+      "id": "pimientos-de-padron",
+      "nombre": "Pimientos de Padrón",
+      "categoria": "Para picar",
+      "descripcion": "Unos pican y otros no. Es parte del juego.",
+      "precio": 6.0
+    },
+    {
+      "id": "tabla-de-quesos",
+      "nombre": "Tabla de quesos curados",
+      "categoria": "Para picar",
+      "descripcion": "Tres quesos de oveja con membrillo y nueces.",
+      "precio": 12.0
+    },
+    {
+      "id": "jamon-iberico",
+      "nombre": "Jamón ibérico de cebo",
+      "categoria": "Para picar",
+      "descripcion": "Cortado a cuchillo, con pan con tomate.",
+      "precio": 16.0
+    },
+    {
+      "id": "tortilla-de-patatas",
+      "nombre": "Tortilla de patatas",
+      "categoria": "Raciones",
+      "descripcion": "Jugosa y con cebolla. El debate lo damos por cerrado.",
+      "precio": 7.5
+    },
+    {
+      "id": "calamares-andaluza",
+      "nombre": "Calamares a la andaluza",
+      "categoria": "Raciones",
+      "descripcion": "Fritos al momento, con limón y alioli suave.",
+      "precio": 11.0
+    },
+    {
+      "id": "gambas-al-ajillo",
+      "nombre": "Gambas al ajillo",
+      "categoria": "Raciones",
+      "descripcion": "En cazuela de barro, chisporroteando. Pide pan, lo vas a necesitar.",
+      "precio": 13.5
+    },
+    {
+      "id": "huevos-rotos",
+      "nombre": "Huevos rotos con chistorra",
+      "categoria": "Raciones",
+      "descripcion": "Patatas, huevo de corral y chistorra. Se rompen en la mesa.",
+      "precio": 10.5
+    },
+    {
+      "id": "albondigas-almendra",
+      "nombre": "Albóndigas en salsa de almendras",
+      "categoria": "Raciones",
+      "descripcion": "Como las de casa, pero sin tener que fregar después.",
+      "precio": 9.5
+    },
+    {
+      "id": "pulpo-a-la-gallega",
+      "nombre": "Pulpo a la gallega",
+      "categoria": "Principales",
+      "descripcion": "Sobre cachelos, con pimentón de la Vera y buen aceite.",
+      "precio": 15.5
+    },
+    {
+      "id": "secreto-iberico",
+      "nombre": "Secreto ibérico a la plancha",
+      "categoria": "Principales",
+      "descripcion": "Con patatas panaderas y pimientos asados.",
+      "precio": 15.0
+    },
+    {
+      "id": "tarta-de-queso",
+      "nombre": "Tarta de queso al horno",
+      "categoria": "Para terminar",
+      "descripcion": "Cremosa en el centro. Suele acabarse antes de las diez.",
+      "precio": 6.0
+    }
+  ],
+  "bebidas": [
+    {
+      "id": "cana",
+      "nombre": "Caña de cerveza",
+      "descripcion": "Bien fría y bien tirada.",
+      "precio": 2.5
+    },
+    {
+      "id": "vino-de-la-casa",
+      "nombre": "Copa de vino de la casa",
+      "descripcion": "Tinto o blanco. Pregunta cuál toca hoy.",
+      "precio": 3.0
+    },
+    {
+      "id": "vermut-de-grifo",
+      "nombre": "Vermut de grifo",
+      "descripcion": "Con su aceituna y su naranja.",
+      "precio": 3.5
+    },
+    {
+      "id": "agua-o-refresco",
+      "nombre": "Agua o refresco",
+      "descripcion": "Para quien conduce, que también se merece un brindis.",
+      "precio": 2.5
+    }
+  ]
+}

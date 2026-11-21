@@ -1,0 +1,282 @@
+/* Bodega Godius · sistema de reseñas · estilos compartidos */
+:root {
+  --papel: #F3EADB;
+  --papel-osc: #E8DAC3;
+  --linea: #D4C2A5;
+  --tinta: #2A1E16;
+  --tinta-suave: #6B5646;
+  --vino: #7B2131;
+  --mostaza: #C58B2A;
+  --pizarra: #22302A;
+  --madera: #5A4433;
+  --f-titulo: "Young Serif", Georgia, "Times New Roman", serif;
+  --f-texto: "Figtree", "Segoe UI", system-ui, sans-serif;
+  --f-tiza: "Caveat", "Segoe Print", cursive;
+  --textura:
+    radial-gradient(rgba(90, 68, 51, .07) 1px, transparent 1.4px),
+    radial-gradient(rgba(90, 68, 51, .05) 1px, transparent 1.4px);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--tinta);
+  font: 400 1.0625rem/1.55 var(--f-texto);
+  background-color: var(--papel);
+  background-image: var(--textura);
+  background-size: 6px 6px, 11px 11px;
+  background-position: 0 0, 3px 5px;
+}
+
+h1, h2, h3 {
+  margin: 0;
+  font-family: var(--f-titulo);
+  font-weight: 400;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+a { color: var(--vino); }
+
+:focus-visible { outline: 3px solid var(--mostaza); outline-offset: 3px; }
+
+.col { max-width: 640px; margin: 0 auto; padding: 0 16px; }
+
+/* ---------- Cabecera fija, opaca ---------- */
+.cabecera {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background-color: var(--papel);
+  border-bottom: 3px double var(--linea);
+}
+.cabecera-in {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 12px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 12px;
+}
+.marca { font: 400 1.35rem/1.1 var(--f-titulo); color: var(--tinta); }
+.marca-tipo {
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+}
+
+/* ---------- Botones: 48 px mínimo, contraste alto ---------- */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .6rem;
+  width: 100%;
+  min-height: 52px;
+  padding: .85rem 1.25rem;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  font: 700 1.0625rem/1.2 var(--f-texto);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .08s ease, box-shadow .08s ease, background-color .15s ease;
+}
+.btn svg { flex: none; width: 22px; height: 22px; }
+.btn-vino {
+  background-color: var(--vino);
+  color: var(--papel);
+  box-shadow: 0 3px 0 var(--tinta);
+}
+.btn-vino:hover { background-color: #6A1C2A; }
+.btn-vino:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--tinta); }
+.btn-borde {
+  background-color: var(--papel);
+  color: var(--vino);
+  border-color: var(--vino);
+}
+.btn-borde:hover { background-color: var(--papel-osc); }
+.btn-grande { min-height: 64px; font-size: 1.2rem; }
+
+/* ---------- Filete doble de carta impresa ---------- */
+.filete { border: 0; border-top: 3px double var(--linea); margin: 2.25rem 0; }
+
+.antetitulo {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  margin: 0 0 .7rem;
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--vino);
+}
+.antetitulo::after { content: ""; flex: 1; border-top: 3px double var(--mostaza); }
+
+/* ---------- Pizarra con marco de madera ---------- */
+.pizarra {
+  position: relative;
+  background-color: var(--pizarra);
+  background-image:
+    radial-gradient(ellipse at 25% 20%, rgba(243, 234, 219, .07), transparent 60%),
+    radial-gradient(ellipse at 80% 85%, rgba(243, 234, 219, .05), transparent 55%);
+  border: 10px solid var(--madera);
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, .3), 0 3px 0 rgba(42, 30, 22, .2);
+  color: #F3EADB;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+/* El texto de la pizarra va siempre en color papel */
+.pizarra p, .pizarra a, .pizarra span, .pizarra strong { color: #F3EADB; }
+
+/* ---------- Sello «De la casa» (va en la esquina de la pizarra) ---------- */
+.sello {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background-color: var(--papel);
+  border: 3px double var(--vino);
+  box-shadow: 0 0 0 3px var(--papel);
+  font: 400 .92rem/1.05 var(--f-titulo);
+  letter-spacing: .04em;
+  text-align: center;
+  text-transform: uppercase;
+  transform: rotate(-12deg);
+}
+.pizarra .sello { color: var(--vino); }
+.sello::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 1px dashed var(--vino);
+  border-radius: 50%;
+}
+
+/* ---------- index.html: página del cliente ---------- */
+.intro { padding: 2.25rem 0 1.5rem; }
+.intro h1 { font-size: clamp(2.1rem, 9vw, 3rem); }
+.entradilla { margin: 1rem 0 0; font-size: 1.125rem; color: var(--tinta-suave); }
+.nota-btn { margin: .8rem 0 0; font-size: .95rem; color: var(--tinta-suave); text-align: center; }
+.problema h2 { font-size: 1.55rem; }
+.problema p { margin: .5rem 0 1rem; }
+
+.pizarra-gracias {
+  margin: 3.25rem 0 0;
+  padding: 4rem 1.25rem 1.75rem;
+  text-align: center;
+}
+.pizarra-gracias .sello { top: -30px; right: 14px; }
+.tiza-grande { margin: 0; font: 700 2.6rem/1 var(--f-tiza); }
+.tiza { margin: .7rem 0 0; font: 500 1.5rem/1.25 var(--f-tiza); }
+
+.pie { padding: 2rem 0 2.75rem; text-align: center; font-size: .95rem; color: var(--tinta-suave); }
+.pie p { margin: .2rem 0; }
+.pie strong { color: var(--tinta); font-weight: 600; }
+
+/* ---------- respuestas.html ---------- */
+.reglas {
+  padding: 1.1rem 1.15rem;
+  background-color: var(--papel-osc);
+  border: 3px double var(--linea);
+  border-radius: 4px;
+}
+.reglas h2 { font-size: 1.3rem; }
+.reglas ul { margin: .7rem 0 .6rem; padding-left: 1.2rem; }
+.reglas li { margin: .3rem 0; }
+.reglas p { margin: 0; font-size: .95rem; color: var(--tinta-suave); }
+
+.resumen { margin: 1.75rem 0 0; font-weight: 600; color: var(--tinta-suave); }
+
+.resena { padding: 1.75rem 0 2rem; border-top: 3px double var(--linea); }
+.resena:first-child { margin-top: 1rem; }
+.resena-cab { display: flex; flex-wrap: wrap; align-items: baseline; gap: .2rem .75rem; }
+.estrellas { font-size: 1.15rem; letter-spacing: .08em; color: var(--mostaza); }
+.estrellas .vacia { color: var(--linea); }
+.autor { font-weight: 700; }
+.hace { font-size: .9rem; color: var(--tinta-suave); }
+.idioma {
+  padding: .05rem .45rem;
+  border: 1.5px solid var(--tinta-suave);
+  border-radius: 3px;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: var(--tinta-suave);
+}
+.texto-resena {
+  margin: .8rem 0 1.4rem;
+  padding-left: .9rem;
+  border-left: 3px solid var(--linea);
+  font-style: italic;
+  color: var(--tinta-suave);
+}
+.etiqueta {
+  margin: 0 0 .5rem;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--vino);
+}
+.respuesta {
+  margin: 0;
+  padding: 1rem 1.1rem;
+  background-color: var(--papel-osc);
+  border: 1px solid var(--linea);
+  border-left: 4px solid var(--vino);
+  border-radius: 4px;
+  white-space: pre-wrap;
+  font-size: 1rem;
+}
+.ojo {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: .7rem;
+  align-items: start;
+  margin: .9rem 0 0;
+  padding: .8rem .95rem;
+  border: 2px dashed var(--mostaza);
+  border-radius: 4px;
+  font-size: .95rem;
+}
+.ojo b { font: 700 1.6rem/1 var(--f-tiza); color: var(--vino); }
+.ojo p { margin: 0; }
+.copiar { margin-top: 1rem; }
+.copiar.hecho { background-color: var(--pizarra); }
+
+.nav-sistema {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 1.25rem;
+  padding: 1.5rem 0 2.5rem;
+  border-top: 3px double var(--linea);
+}
+.nav-sistema a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  font-weight: 700;
+}
+
+@media (min-width: 600px) {
+  .copiar { width: auto; min-width: 240px; }
+}
+
+@media print {
+  .btn, button, .no-print { display: none !important; }
+  .cabecera { position: static; }
+}

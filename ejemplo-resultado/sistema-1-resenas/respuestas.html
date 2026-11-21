@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F3EADB">
+  <title>Respuestas a reseñas · Bodega Godius</title>
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Figtree:wght@400;500;600;700&family=Young+Serif&display=swap">
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <header class="cabecera">
+    <div class="cabecera-in">
+      <span class="marca" data-campo="nombre">Bodega Godius</span>
+      <span class="marca-tipo">Respuestas a reseñas</span>
+    </div>
+  </header>
+
+  <main class="col">
+    <section class="intro">
+      <p class="antetitulo">Para el equipo</p>
+      <h1>Respuestas listas para pegar en Google</h1>
+      <p class="entradilla">Una por reseña, con el tono de la casa. Léela, pulsa «Copiar respuesta» y pégala en Google.</p>
+    </section>
+
+    <section class="reglas">
+      <h2>Lo que nunca va en una respuesta</h2>
+      <ul>
+        <li>El nombre completo del cliente: como mucho, el de pila.</li>
+        <li>Alergias, intolerancias, enfermedades o familiares, aunque la reseña lo cuente. Son datos personales y de salud: la AEPD multa por publicarlos.</li>
+        <li>Excusas. En las malas se pide perdón de verdad y se invita a volver.</li>
+      </ul>
+      <p>Las respuestas delicadas llevan una nota «Ojo» con lo que se ha evitado.</p>
+    </section>
+
+    <p class="resumen" id="resumen"></p>
+    <div id="lista"></div>
+
+    <nav class="nav-sistema no-print" aria-label="Sistema de reseñas">
+      <a href="index.html">Página del cliente</a>
+      <a href="cartel.html">Cartel de mesa</a>
+    </nav>
+  </main>
+
+  <p class="no-print" id="aviso" role="status" aria-live="polite" style="position:absolute;left:-9999px;"></p>
+
+  <script src="datos.js"></script>
+  <script>
+    (function () {
+      var B = window.BODEGA;
+      var IDIOMAS = { en: "inglés", de: "alemán", fr: "francés", it: "italiano", pt: "portugués" };
+
+      document.querySelectorAll("[data-campo]").forEach(function (el) {
+        var valor = B[el.getAttribute("data-campo")];
+        if (valor) el.textContent = valor;
+      });
+
+      function el(tag, clase, texto) {
+        var n = document.createElement(tag);
+        if (clase) n.className = clase;
+        if (texto) n.textContent = texto;
+        return n;
+      }
+
+      function copiarViejo(texto) {
+        var ta = document.createElement("textarea");
+        ta.value = texto;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        return ok;
+      }
+
+      function copiar(texto, boton, autor) {
+        var aviso = document.getElementById("aviso");
+        function listo(ok) {
+          boton.textContent = ok ? "Copiada. Pégala en Google" : "No se pudo copiar: selecciónala a mano";
+          boton.classList.toggle("hecho", ok);
+          aviso.textContent = ok ? "Respuesta a " + autor + " copiada." : "No se pudo copiar.";
+          setTimeout(function () {
+            boton.textContent = "Copiar respuesta";
+            boton.classList.remove("hecho");
+          }, 2200);
+        }
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(texto).then(
+            function () { listo(true); },
+            function () { listo(copiarViejo(texto)); }
+          );
+        } else {
+          listo(copiarViejo(texto));
+        }
+      }
+
+      var lista = document.getElementById("lista");
+      var conOjo = 0;
+
+      B.resenas.forEach(function (r) {
+        var art = el("article", "resena");
+        art.id = "resena-" + r.id;
+
+        var cab = el("div", "resena-cab");
+        var estrellas = el("span", "estrellas");
+        estrellas.setAttribute("role", "img");
+        estrellas.setAttribute("aria-label", r.estrellas + " de 5 estrellas");
+        estrellas.appendChild(document.createTextNode("★".repeat(r.estrellas)));
+        estrellas.appendChild(el("span", "vacia", "★".repeat(5 - r.estrellas)));
+        cab.appendChild(estrellas);
+        cab.appendChild(el("span", "autor", r.autor));
+        cab.appendChild(el("span", "hace", r.hace));
+        if (r.idioma !== "es") cab.appendChild(el("span", "idioma", r.idioma.toUpperCase()));
+        art.appendChild(cab);
+
+        var cita = el("blockquote", "texto-resena", r.texto);
+        if (r.idioma !== "es") cita.lang = r.idioma;
+        art.appendChild(cita);
+
+        var etiqueta = "Nuestra respuesta";
+        if (r.idioma !== "es") etiqueta += " · en " + (IDIOMAS[r.idioma] || r.idioma) + ", como la reseña";
+        art.appendChild(el("p", "etiqueta", etiqueta));
+
+        var resp = el("p", "respuesta", r.respuesta);
+        if (r.idioma !== "es") resp.lang = r.idioma;
+        art.appendChild(resp);
+
+        if (r.ojo) {
+          conOjo++;
+          var ojo = el("div", "ojo");
+          ojo.appendChild(el("b", "", "Ojo"));
+          ojo.appendChild(el("p", "", r.ojo));
+          art.appendChild(ojo);
+        }
+
+        var boton = el("button", "btn btn-vino copiar", "Copiar respuesta");
+        boton.type = "button";
+        boton.addEventListener("click", function () { copiar(r.respuesta, boton, r.autor.split(" ")[0]); });
+        art.appendChild(boton);
+
+        lista.appendChild(art);
+      });
+
+      document.getElementById("resumen").textContent =
+        B.resenas.length + " reseñas contestadas · " + conOjo + " con nota «Ojo»";
+    })();
+  </script>
+</body>
+</html>

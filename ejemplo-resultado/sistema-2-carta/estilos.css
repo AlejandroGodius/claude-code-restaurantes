@@ -1,0 +1,264 @@
+/* Bodega Godius · carta digital · estilos */
+:root {
+  --papel: #F3EADB;
+  --papel-osc: #E8DAC3;
+  --linea: #D4C2A5;
+  --tinta: #2A1E16;
+  --tinta-suave: #6B5646;
+  --vino: #7B2131;
+  --mostaza: #C58B2A;
+  --pizarra: #22302A;
+  --madera: #5A4433;
+  --f-titulo: "Young Serif", Georgia, "Times New Roman", serif;
+  --f-texto: "Figtree", "Segoe UI", system-ui, sans-serif;
+  --f-tiza: "Caveat", "Segoe Print", cursive;
+  --textura:
+    radial-gradient(rgba(90, 68, 51, .07) 1px, transparent 1.4px),
+    radial-gradient(rgba(90, 68, 51, .05) 1px, transparent 1.4px);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--tinta);
+  font: 400 1.0625rem/1.55 var(--f-texto);
+  background-color: var(--papel);
+  background-image: var(--textura);
+  background-size: 6px 6px, 11px 11px;
+  background-position: 0 0, 3px 5px;
+}
+
+h1, h2, h3 {
+  margin: 0;
+  font-family: var(--f-titulo);
+  font-weight: 400;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+a { color: var(--vino); }
+
+:focus-visible { outline: 3px solid var(--mostaza); outline-offset: 3px; }
+
+/* Columna: 640 px en móvil, 1040 px y 2 columnas desde 900 px */
+.col { max-width: 640px; margin: 0 auto; padding: 0 16px; }
+
+/* ---------- Cabecera fija, opaca, con selector de idioma ---------- */
+.cabecera {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background-color: var(--papel);
+  border-bottom: 3px double var(--linea);
+}
+.cabecera-in {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 6px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.marca { display: block; font: 400 1.3rem/1.1 var(--f-titulo); color: var(--tinta); }
+.marca-tipo {
+  display: block;
+  margin-top: 2px;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+}
+.idiomas { display: flex; align-items: center; flex: none; }
+.idiomas span { color: var(--linea); font-weight: 700; padding: 0 1px; }
+.idiomas button {
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0 6px;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  background: none;
+  color: var(--tinta);
+  font: 700 1rem/1 var(--f-texto);
+  letter-spacing: .06em;
+  cursor: pointer;
+}
+.idiomas button:hover { border-color: var(--linea); }
+.idiomas button[aria-pressed="true"] { background-color: var(--vino); color: var(--papel); }
+
+/* ---------- Detalles de casa ---------- */
+.antetitulo {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  margin: 0 0 .9rem;
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--vino);
+}
+.antetitulo::after { content: ""; flex: 1; border-top: 3px double var(--mostaza); }
+
+/* Hueco de foto: 4:3, papel oscuro con rayado sutil */
+.foto {
+  position: relative;
+  display: grid;
+  place-content: center;
+  gap: .35rem;
+  margin: 0;
+  padding: 1.25rem;
+  aspect-ratio: 4 / 3;
+  text-align: center;
+  background-color: var(--papel-osc);
+  background-image: repeating-linear-gradient(135deg, rgba(90, 68, 51, .07) 0 2px, transparent 2px 12px);
+  border: 1px solid var(--linea);
+  box-shadow: inset 0 0 0 8px var(--papel-osc), inset 0 0 0 9px var(--linea);
+}
+.foto-nombre { font: 400 1.35rem/1.15 var(--f-titulo); color: var(--tinta-suave); text-wrap: balance; }
+.foto-nota { font-size: .85rem; color: var(--tinta-suave); }
+.insignia {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  padding: .3rem .6rem;
+  background-color: var(--vino);
+  color: var(--papel);
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  border-radius: 3px;
+}
+
+/* ---------- Pizarra con marco de madera ---------- */
+.pizarra {
+  position: relative;
+  background-color: var(--pizarra);
+  background-image:
+    radial-gradient(ellipse at 25% 20%, rgba(243, 234, 219, .07), transparent 60%),
+    radial-gradient(ellipse at 80% 85%, rgba(243, 234, 219, .05), transparent 55%);
+  border: 10px solid var(--madera);
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, .3), 0 3px 0 rgba(42, 30, 22, .2);
+  color: #F3EADB;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+/* El texto de la pizarra va siempre en color papel */
+.pizarra h1, .pizarra h2, .pizarra p, .pizarra span, .pizarra strong { color: #F3EADB; }
+
+/* Sello «De la casa»: en la esquina de la pizarra, nunca sobre un título */
+.sello {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background-color: var(--papel);
+  border: 3px double var(--vino);
+  box-shadow: 0 0 0 3px var(--papel);
+  font: 400 .82rem/1.1 var(--f-titulo);
+  letter-spacing: .03em;
+  text-align: center;
+  text-transform: uppercase;
+  transform: rotate(-12deg);
+}
+.pizarra .sello { color: var(--vino); }
+.sello::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 1px dashed var(--vino);
+  border-radius: 50%;
+}
+
+/* ---------- Plato estrella ---------- */
+.estrella { padding: 1.75rem 0 0; }
+.estrella-grid { display: grid; gap: 0; }
+.estrella .foto { border-bottom: 0; }
+.estrella .foto-nombre { font-size: 1.6rem; }
+.estrella-pizarra { padding: 1.25rem 1.25rem 1.4rem; }
+.estrella-pizarra .sello { top: -34px; right: 12px; }
+.tiza-ante { margin: 0; padding-right: 92px; font: 700 1.45rem/1.15 var(--f-tiza); }
+.tiza-nombre { margin: .7rem 0 0; font: 700 2.7rem/1 var(--f-tiza); }
+.tiza-desc { margin: .6rem 0 0; font-size: 1.05rem; line-height: 1.45; }
+.tiza-precio {
+  display: inline-block;
+  margin: .9rem 0 0;
+  padding-bottom: 2px;
+  border-bottom: 3px double var(--mostaza);
+  font: 700 2.3rem/1 var(--f-tiza);
+}
+
+.alergenos {
+  margin: 1.5rem 0 0;
+  padding: .85rem 1rem;
+  background-color: var(--papel-osc);
+  border: 2px dashed var(--mostaza);
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+}
+.alergenos strong { color: var(--vino); font-weight: 700; margin-right: .35rem; }
+
+/* ---------- Secciones y platos ---------- */
+.carta-cab { padding: 2.75rem 0 0; }
+.carta-cab h2 { font-size: clamp(1.8rem, 7vw, 2.4rem); }
+
+.seccion { padding-top: 2.25rem; }
+.seccion-titulo {
+  display: flex;
+  align-items: center;
+  gap: .9rem;
+  padding: .55rem 0;
+  border-top: 3px double var(--tinta);
+  border-bottom: 3px double var(--tinta);
+  font-size: 1.65rem;
+}
+.lista { display: grid; gap: 2.25rem; padding-top: 1.5rem; }
+
+.linea-precio { display: flex; align-items: baseline; gap: .45rem; margin-top: .85rem; }
+.linea-precio h3 { flex: 0 1 auto; min-width: 0; font-size: 1.35rem; }
+.puntos { flex: 1 1 1.5rem; min-width: 1.5rem; border-bottom: 2px dotted var(--tinta-suave); transform: translateY(-.28em); opacity: .55; }
+.precio { flex: none; font: 600 1.2rem/1 var(--f-texto); font-variant-numeric: tabular-nums; color: var(--tinta); }
+.desc { margin: .35rem 0 0; color: var(--tinta-suave); }
+
+.bebidas .lista { gap: 1.25rem; }
+.bebidas .linea-precio { margin-top: 0; }
+.bebidas h3 { font-size: 1.2rem; }
+
+/* ---------- Pie ---------- */
+.pie { margin-top: 3rem; padding: 1.75rem 0 2.75rem; border-top: 3px double var(--linea); text-align: center; }
+.pie-lema { margin: 0; font: 700 1.6rem/1.2 var(--f-tiza); color: var(--vino); text-wrap: balance; }
+.pie p { margin: .4rem 0 0; color: var(--tinta-suave); font-size: .95rem; }
+.pie .alergenos { text-align: left; color: var(--tinta); }
+
+/* ---------- Escritorio: 2 columnas, máx. 1040 px ---------- */
+@media (min-width: 900px) {
+  .col, .cabecera-in { max-width: 1040px; }
+  .estrella-grid { grid-template-columns: 1.15fr 1fr; align-items: center; gap: 0; }
+  .estrella .foto { border-bottom: 1px solid var(--linea); border-right: 0; }
+  .estrella-pizarra { padding: 2rem 2rem 2.2rem; }
+  .tiza-nombre { font-size: 3.2rem; }
+  .lista { grid-template-columns: 1fr 1fr; column-gap: 2.5rem; row-gap: 2.75rem; }
+  .bebidas .lista { row-gap: 1.5rem; }
+}
+
+@media print {
+  .btn, button, .no-print { display: none !important; }
+  .cabecera { position: static; }
+}
+
+/* 21-nov (vídeo ep. 1): foto real dentro del hueco */
+.foto.con-img { overflow: hidden; }
+.foto-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; z-index: 1; }
+.foto.con-img .foto-nombre, .foto.con-img .foto-nota { visibility: hidden; }
+.foto.con-img .insignia { z-index: 2; }
+.foto.con-img::before { z-index: 2; border-color: rgba(255, 250, 240, .35); }

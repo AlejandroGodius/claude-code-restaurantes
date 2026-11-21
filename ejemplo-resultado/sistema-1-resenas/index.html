@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F3EADB">
+  <title>Tu reseña · Bodega Godius</title>
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Figtree:wght@400;500;600;700&family=Young+Serif&display=swap">
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <header class="cabecera">
+    <div class="cabecera-in">
+      <span class="marca" data-campo="nombre">Bodega Godius</span>
+      <span class="marca-tipo" data-campo="tipo">Taberna de tapas</span>
+    </div>
+  </header>
+
+  <main class="col">
+    <section class="intro">
+      <p class="antetitulo">Antes de irte</p>
+      <h1>¿Qué tal te hemos tratado?</h1>
+      <p class="entradilla">Cuéntalo en Google. A otros les ayuda a decidir dónde tapear, y a nosotros, a saber qué hacemos bien y qué no.</p>
+    </section>
+
+    <a class="btn btn-vino btn-grande" id="btnGoogle" href="#">
+      Escribir mi reseña en Google
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+    <p class="nota-btn">Se abre Google con la reseña lista. Las estrellas las pones tú.</p>
+
+    <hr class="filete">
+
+    <section class="problema">
+      <h2>¿Algo no fue bien?</h2>
+      <p>Escríbenos y te contesta alguien de la barra, en persona.</p>
+      <a class="btn btn-borde" id="btnEmail" href="#">hola@bodegagodius.es</a>
+    </section>
+
+    <aside class="pizarra pizarra-gracias">
+      <span class="sello" aria-hidden="true">De la<br>casa</span>
+      <p class="tiza-grande">¡Gracias por venir!</p>
+      <p class="tiza" data-campo="lema">Tapas de siempre, caña bien tirada y nadie con prisa.</p>
+    </aside>
+
+    <footer class="pie">
+      <p><strong data-campo="nombre">Bodega Godius</strong></p>
+      <p data-campo="horario">De martes a domingo, de 12:30 a 16:30 y de 20:00 a 00:00</p>
+    </footer>
+  </main>
+
+  <script src="datos.js"></script>
+  <script>
+    (function () {
+      var B = window.BODEGA;
+      document.querySelectorAll("[data-campo]").forEach(function (el) {
+        var valor = B[el.getAttribute("data-campo")];
+        if (valor) el.textContent = valor;
+      });
+      document.getElementById("btnGoogle").href = B.url_resena_google;
+      var email = document.getElementById("btnEmail");
+      email.href = "mailto:" + B.email + "?subject=" + encodeURIComponent("Mi visita a " + B.nombre);
+      email.textContent = B.email;
+    })();
+  </script>
+</body>
+</html>
